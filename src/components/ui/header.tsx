@@ -7,7 +7,7 @@ import { useModalStore } from "@/lib/use-modal-store";
 export const navLinks = [
   { name: "Home", href: "/" },
   { name: "Schedule", href: "/shedule" },
-  { name: "Team", href: "/team" },
+  //   { name: "Team", href: "/team" },
   { name: "FAQ", href: "/faq" },
 ];
 export const Header = () => {
@@ -28,14 +28,22 @@ export const Header = () => {
 
       {/* Ticket */}
       <div className="flex items-center space-x-4">
-        <Button asChild className="rounded-full">
-          <Link href="/tickets">
+        <Button
+          asChild
+          className="rounded-full"
+          onClick={() => setOpen(true, "ticketDialog")}
+        >
+          <span>
             Buy Ticket <ShoppingCart className="size-4 ml-2" />
-          </Link>
+          </span>
         </Button>
 
         {/* Hamburger Menu */}
-        <Button size="icon" className="md:hidden" onClick={() => setOpen(true)}>
+        <Button
+          size="icon"
+          className="md:hidden"
+          onClick={() => setOpen(true, "sidebarToggle")}
+        >
           <Menu className="size-5" />
         </Button>
       </div>

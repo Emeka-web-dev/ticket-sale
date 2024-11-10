@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SidebarToggle } from "./sidebar-toggle";
+import { BuyTicketModal } from "./buy-ticket-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -14,6 +15,7 @@ export const ModalProvider = () => {
   return (
     <>
       <SidebarToggle />
+      <BuyTicketModal />
     </>
   );
 };

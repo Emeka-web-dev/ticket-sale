@@ -5,8 +5,9 @@ import { Sheet, SheetContent } from "../ui/sheet";
 
 export const SidebarToggle = () => {
   const state = useModalStore();
+  const onOpen = state.isOpen && state.type === "sidebarToggle";
   return (
-    <Sheet open={state.isOpen} onOpenChange={state.setOpen}>
+    <Sheet open={onOpen} onOpenChange={state.setOpen}>
       <SheetContent>
         <nav className="flex flex-col space-y-3 pt-4">
           {navLinks.map((link) => (
