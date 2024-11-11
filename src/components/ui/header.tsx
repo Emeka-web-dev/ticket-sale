@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "./button";
 import { Menu, ShoppingCart } from "lucide-react";
 import { useModalStore } from "@/lib/use-modal-store";
+import Logo from "../logo";
 
 export const navLinks = [
   { name: "Home", href: "/" },
@@ -15,7 +16,9 @@ export const Header = () => {
   return (
     <header className="flex items-center justify-between px-4 py-4 border-b border-gray-200 bg-white">
       {/* Logo */}
-      <Link href="/">Logo</Link>
+      <Link href="/">
+        <Logo />
+      </Link>
 
       {/* Menu */}
       <nav className="hidden md:flex space-x-4 text-lg font-semibold">
