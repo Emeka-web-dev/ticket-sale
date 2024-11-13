@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Rubik } from "next/font/google";
+import { Header } from "@/components/header";
 import "./globals.css";
 import { ModalProvider } from "@/components/providers/modal-provider";
+import { cn } from "@/lib/utils";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const rubik = Rubik({
+  weight: ["300", "400", "700"],
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -27,9 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn(rubik.className, "flex flex-col min-h-screen relative")}
       >
-        {children}
+        <Header />
+        <div className="pt-[4rem]">{children}</div>
         <ModalProvider />
       </body>
     </html>

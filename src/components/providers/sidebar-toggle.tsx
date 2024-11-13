@@ -1,6 +1,6 @@
 import { useModalStore } from "@/lib/use-modal-store";
 import Link from "next/link";
-import { navLinks } from "../ui/header";
+import { navLinks } from "../header";
 import { Sheet, SheetContent } from "../ui/sheet";
 
 export const SidebarToggle = () => {

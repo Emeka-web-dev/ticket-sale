@@ -5,8 +5,8 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <div className="p-10 flex flex-col-reverse md:grid md:grid-cols-2 gap-y-6 ">
-      <div className="p-3 grid   mx-auto gap-y-5 ">
+    <div className="px-10 flex flex-col-reverse md:grid md:grid-cols-2 gap-y-6 ">
+      <div className="p-3 grid  mx-auto gap-y-5 ">
         <p className="text-orange-600 font-medium ">
           Best Destinations around the world
         </p>
