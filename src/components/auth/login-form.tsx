@@ -20,6 +20,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
+import { login } from "@/action/login-action";
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -35,8 +36,27 @@ export const LoginForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof LoginSchema>) => {
+    setError("");
+    setSuccess("");
     startTransition(() => {
-      console.log(data);
+      login(data)
+        .then((res) => {
+          if (res?.error) {
+            form.reset();
+            setError(res.error);
+          }
+          if (res?.success) {
+            form.reset();
+            setSuccess(res.success);
+          }
+
+          if (res?.twoFactor) {
+            setIsTwoFactor(true);
+          }
+        })
+        .catch(() => {
+          setError("Something went wrong.");
+        });
     });
   };
 
