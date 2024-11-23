@@ -29,7 +29,7 @@ export const Header = () => {
       {!isAuthroute && (
         <nav className="hidden md:flex space-x-4 text-lg font-semibold">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.href}>
+            <Link key={link.name} href={link.href} className="text-blue-950">
               {link.name}
             </Link>
           ))}
@@ -54,7 +54,7 @@ export const Header = () => {
         {!isAuthroute && (
           <Button
             size="icon"
-            className="md:hidden"
+            className="md:hidden !bg-blue-950"
             onClick={() => setOpen(true, "sidebarToggle")}
           >
             <Menu className="size-5" />

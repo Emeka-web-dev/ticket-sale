@@ -22,8 +22,8 @@ const Hero = () => {
           the.
         </p>
         <div className="flex items-center gap-4">
-          <Button className="bg-yellow-600 shadow shadow-yellow-600 text-white w-[170px] !py-6 text-base   ">
-            Find out more
+          <Button className="bg-yellow-600 capitalize shadow shadow-yellow-600 text-white w-[170px] !py-6 text-base   ">
+            purchase ticket
           </Button>
           <Button className="bg-transparent hover:bg-transparent shadow-none ">
             <div className="flex gap-2 items-center">
