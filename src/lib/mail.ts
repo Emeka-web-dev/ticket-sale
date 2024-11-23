@@ -28,10 +28,28 @@ export const sendVerificationEmail = async (email: string, token: string) => {
 
 export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
   const mailOptions: Mail.Options = {
-    from: `Opes Tech <${process.env.BREVO_USER}>`,
+    from: "Travel Experts",
     to: email,
     subject: "OTP Code",
     html: `<p>Your OTP Code: ${token}</p>`,
+  };
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent:", info.response);
+  } catch (error) {
+    console.error("Error occurred:", error);
+  }
+};
+
+export const sendPasswordResetEmail = async (email: string, token: string) => {
+  const confirmLink = `${process.env
+    .NEXT_PUBLIC_SITE_URL!}/auth/new-password?token=${token}`;
+
+  const mailOptions = {
+    from: "Travel Experts",
+    to: email,
+    subject: "Reset your password",
+    html: `<p>Click <a href="${confirmLink}">here</a> reset password.</p>`,
   };
   try {
     const info = await transporter.sendMail(mailOptions);

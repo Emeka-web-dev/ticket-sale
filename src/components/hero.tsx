@@ -1,9 +1,12 @@
+"use client";
 import React from "react";
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
 import Image from "next/image";
+import { useModalStore } from "@/lib/use-modal-store";
 
 const Hero = () => {
+  const setOpen = useModalStore((state) => state.setOpen);
   return (
     <div className="px-10 flex flex-col-reverse md:grid md:grid-cols-2 gap-y-6 ">
       <div className="p-3 grid  mx-auto gap-y-5 ">
@@ -22,7 +25,10 @@ const Hero = () => {
           the.
         </p>
         <div className="flex items-center gap-4">
-          <Button className="bg-yellow-600 capitalize shadow shadow-yellow-600 text-white w-[170px] !py-6 text-base   ">
+          <Button
+            onClick={() => setOpen(true, "ticketDialog")}
+            className="bg-yellow-600 capitalize shadow shadow-yellow-600 text-white w-[170px] !py-6 text-base   "
+          >
             purchase ticket
           </Button>
           <Button className="bg-transparent hover:bg-transparent shadow-none ">
