@@ -14,7 +14,7 @@ export const BuyTicketModal = () => {
   const onOpen = state.isOpen && state.type === "ticketDialog";
   return (
     <Dialog open={onOpen} onOpenChange={state.setOpen}>
-      <DialogContent className="max-w-4xl mx-auto  grid gap-y-10 p-7">
+      <DialogContent className="max-w-4xl  mx-auto grid gap-y-10 p-7">
         <DialogHeader>
           <DialogTitle className="text-center grid gap-y-5">
             <h1 className="text-center text-3xl">Purchase Ticket</h1>
@@ -28,8 +28,8 @@ export const BuyTicketModal = () => {
           </DialogTitle>
         </DialogHeader>
         <div className="">
-          {/* <TicketType /> */}
-          <BuyerInformation />
+          <TicketType />
+          {/* <BuyerInformation /> */}
         </div>
       </DialogContent>
     </Dialog>
