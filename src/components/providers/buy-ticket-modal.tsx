@@ -1,13 +1,6 @@
 import { useModalStore } from "@/lib/use-modal-store";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
 import TicketType from "../ticket-type";
-import BuyerInformation from "../buyer-information";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 
 export const BuyTicketModal = () => {
   const state = useModalStore();
