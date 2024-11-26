@@ -1,42 +1,13 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useModalStore } from "@/lib/use-modal-store";
-import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import { CalendarIcon, SearchIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
-import { cn } from "@/lib/utils";
 // import { toast } from "@/components/hooks/use-toast"
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
@@ -46,19 +17,6 @@ const ViewTicketModal = () => {
   const state = useModalStore();
   const onOpen = state.isOpen && state.type === "viewTicket";
 
-  const FormSchema = z.object({
-    dob: z.date({
-      required_error: "A date of birth is required.",
-    }),
-  });
-
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  });
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-  }
   return (
     <Dialog open={onOpen} onOpenChange={state.setOpen}>
       <DialogContent className="max-w-7xl mx-auto  grid gap-y-10 p-7">
