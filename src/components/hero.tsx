@@ -9,7 +9,7 @@ const Hero = () => {
   const setOpen = useModalStore((state) => state.setOpen);
   return (
     <div className="px-10 flex flex-col-reverse md:grid md:grid-cols-2 gap-y-6 ">
-      <div className="p-3 grid  mx-auto gap-y-5 ">
+      <div className="p-3 grid content-start mx-auto gap-y-5 ">
         <p className="text-orange-600 font-medium ">
           Best Destinations around the world
         </p>
@@ -26,7 +26,7 @@ const Hero = () => {
         </p>
         <div className="flex items-center gap-4">
           <Button
-            onClick={() => setOpen(true, "ticketDialog")}
+            onClick={() => setOpen(true, "viewTicket")}
             className="bg-yellow-600 capitalize shadow shadow-yellow-600 text-white w-[170px] !py-6 text-base   "
           >
             purchase ticket
@@ -43,11 +43,11 @@ const Hero = () => {
           </Button>
         </div>
       </div>
-      <div className=" relative min-h-[80vh] ">
+      <div className=" relative grid contain-content max-h-[calc(100vh-64px)]  ">
         <div className="absolute w-[100px]  h-[100px] top-[20%] z-10 -left-8 ">
           <Image src={"/plane.png"} alt="" className="object-contain" fill />
         </div>
-        <div className="relative w-full bg-[url('/Decore.png')] h-[80vh]  bg-no-repeat bg-cover"></div>
+        <div className="relative w-full bg-[url('/Decore.png')] max-h-[calc(100vh-64px)]   bg-no-repeat bg-cover"></div>
         <Image src={"/travel.png"} alt="" className="object-contain" fill />
       </div>
     </div>
