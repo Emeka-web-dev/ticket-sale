@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type ModalType = "sidebarToggle" | "ticketDialog";
+type ModalType = "sidebarToggle" | "ticketDialog" | "viewTicket";
 interface ModalStoreState {
   type: ModalType | null;
   isOpen: boolean;
