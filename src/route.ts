@@ -1,6 +1,7 @@
 export const publicRoute = [
   "/api/signup",
   "/api/webhook",
+  "/api/getLocation",
   // "/api/pusherAuth",
   // "/terms-of-use",
   // "/privacy-policy",
