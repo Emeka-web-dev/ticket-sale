@@ -9,21 +9,23 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { PopoverDate } from "../popover-date";
 import { PopoverItem } from "../popover-item";
 import { cn } from "@/lib/utils";
-
-type Status = {
-  value: string;
-  label: string;
-};
+import { LocationData } from "../../../typings";
 
 const ViewTicketModal = () => {
   const state = useModalStore();
   const onOpen = state.isOpen && state.type === "viewTicket";
 
-  const [startLocation, setStartLocation] = React.useState<Status | null>(null);
-  const [endLocation, setEndLocation] = React.useState<Status | null>(null);
+  const [startLocation, setStartLocation] = React.useState<LocationData | null>(
+    null
+  );
+  const [endLocation, setEndLocation] = React.useState<LocationData | null>(
+    null
+  );
   const [activeTrip, setActiveTrip] = React.useState<"round-trip" | "one-way">(
     "round-trip"
   );
+
+  console.log(startLocation);
   return (
     <Dialog open={onOpen} onOpenChange={state.setOpen}>
       <DialogContent className="max-w-6xl mx-auto  grid gap-y-10 p-5 mb-6">

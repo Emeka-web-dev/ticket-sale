@@ -26,9 +26,10 @@ export const PopoverDate = ({ title, isDisabled }: PovoverDateProps) => {
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
-            mode="single"
+            mode="range"
+            numberOfMonths={1}
             disabled={(date) =>
-              date > new Date() || date < new Date("1900-01-01")
+              date < new Date(new Date().setHours(0, 0, 0, 0))
             }
             initialFocus
           />

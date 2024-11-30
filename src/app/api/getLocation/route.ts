@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import qs from "query-string";
+import { LocationData } from "../../../../typings";
 
 export async function GET(req: Request) {
   try {
@@ -14,9 +15,10 @@ export async function GET(req: Request) {
         countryIds: "NG",
         namePrefix: location,
         limit: 10,
-        types: "CITY",
       },
     });
+
+    const locationDetails: LocationData[] = [];
     const response = await axios.get(url, {
       headers: {
         "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
@@ -25,7 +27,16 @@ export async function GET(req: Request) {
       },
     });
 
-    return NextResponse.json(response.data);
+    response.data.data.forEach((place: LocationData) => {
+      return locationDetails.push({
+        name: place.name,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        id: place.id,
+      });
+    });
+
+    return NextResponse.json(locationDetails);
   } catch (error) {
     console.log("INTERNAL_ERROR", error);
     return new NextResponse("Internal Error", { status: 500 });

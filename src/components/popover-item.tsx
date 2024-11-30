@@ -1,27 +1,57 @@
-import { MapPin } from "lucide-react";
-import { useState } from "react";
+"use client";
+import axios from "axios";
+import qs from "query-string";
+import { useCallback, useEffect, useState } from "react";
+import { LocationData } from "../../typings";
 import { Button } from "./ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
+  CommandItem,
   CommandList,
 } from "./ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Separator } from "./ui/separator";
 
-type Status = {
-  value: string;
-  label: string;
-};
 type PopoverItemProps = {
   title: string;
-  location: Status | null;
-  setLocation: (location: Status | null) => void;
+  location: LocationData | null;
+  setLocation: (location: LocationData | null) => void;
 };
-export const PopoverItem = ({ location, title }: PopoverItemProps) => {
+export const PopoverItem = ({
+  location,
+  title,
+  setLocation,
+}: PopoverItemProps) => {
   const [openLeaveFrom, setOpenLeaveFrom] = useState(false);
+  const [locationData, setLocationData] = useState<LocationData[]>([]);
+
+  const onFetchData = useCallback(async () => {
+    try {
+      const url = qs.stringifyUrl({
+        url: "/api/getLocation",
+        query: {
+          location: location?.name,
+        },
+      });
+      const response = await axios.get(url);
+      setLocationData(response.data);
+    } catch {
+      return null;
+    }
+  }, [location]);
+
+  useEffect(() => {
+    setLocation(null);
+  }, [setOpenLeaveFrom]);
+
+  useEffect(() => {
+    if (location && location.name.length >= 2) {
+      onFetchData();
+    }
+  }, [location, onFetchData]);
+
   return (
     <div className="w-full min-h-[70px] items-center border shadow rounded-md flex h-full">
       <Popover open={openLeaveFrom} onOpenChange={setOpenLeaveFrom}>
@@ -34,8 +64,8 @@ export const PopoverItem = ({ location, title }: PopoverItemProps) => {
             className="w-full justify-start text-gray-600 capitalize "
           >
             {location ? (
-              <div className="capitalize my-3 w-fit grid grid-flow-col auto-cols-max p-1 rounded-sm items-center gap-1.5 bg-gray-100">
-                <span className="text-sm">{location?.label}</span>
+              <div className="capitalize my-3 w-full h-full grid grid-flow-col auto-cols-max rounded-sm items-center">
+                <span className="text-sm">{location?.name}</span>
               </div>
             ) : (
               <span>{title}</span>
@@ -48,39 +78,29 @@ export const PopoverItem = ({ location, title }: PopoverItemProps) => {
           align="start"
         >
           <Command>
-            <CommandInput placeholder="Change status..." />
+            <CommandInput
+              placeholder="Change status..."
+              onValueChange={(value) =>
+                setLocation({ ...location!, name: value })
+              }
+            />
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
-
               <CommandGroup className="px-2">
-                <div className="capitalize font-semibold my-3 hover:bg-none">
-                  current Location
-                </div>
-                <div className="capitalize  my-3 w-fit grid grid-flow-col auto-cols-max p-1 rounded-sm items-center gap-1.5 bg-gray-100">
-                  <MapPin className="text-sm" size={16} />
-                  <span className="text-sm">{location?.label} </span>
-                </div>
-                <Separator className="my-4" />
+                {locationData &&
+                  locationData.map((item) => (
+                    <CommandItem
+                      key={item.id}
+                      value={item.name}
+                      onSelect={() => {
+                        setLocation(item);
+                        setOpenLeaveFrom(false);
+                      }}
+                    >
+                      {item.name}
+                    </CommandItem>
+                  ))}
               </CommandGroup>
-
-              <div className="!grid grid-cols-3 gap-2">
-                {/* {statuses.map((status) => (
-                              <CommandItem
-                                key={status.value}
-                                value={status.value}
-                                onSelect={(value) => {
-                                  setStartLocation(
-                                    statuses.find(
-                                      (priority) => priority.value === value
-                                    ) || null
-                                  );
-                                  setOpenLeaveFrom(false);
-                                }}
-                              >
-                                {status.label}
-                              </CommandItem>
-                            ))} */}
-              </div>
             </CommandList>
           </Command>
         </PopoverContent>
