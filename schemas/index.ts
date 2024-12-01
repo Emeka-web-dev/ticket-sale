@@ -32,3 +32,28 @@ export const NewPasswordSchema = z.object({
     message: "Minimum of 6 characters required",
   }),
 });
+
+export const TicketSchema = z.object({
+  leavingFrom: z
+    .object({
+      id: z.number(),
+      name: z.string(),
+      longitude: z.number(),
+      latitude: z.number(),
+    })
+    .nullable(),
+  goingTo: z
+    .object({
+      id: z.number(),
+      name: z.string(),
+      longitude: z.number(),
+      latitude: z.number(),
+    })
+    .nullable(),
+
+  date: z.object({
+    departureDate: z.date(),
+    returnDate: z.date().optional(),
+  }),
+  numberOfPassenger: z.number().min(1),
+});

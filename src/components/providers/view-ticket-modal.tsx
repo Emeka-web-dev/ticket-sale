@@ -1,31 +1,46 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useModalStore } from "@/lib/use-modal-store";
-import { SearchIcon } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 
-import { PopoverDate } from "../popover-date";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { TicketSchema } from "../../../schemas";
 import { PopoverItem } from "../popover-item";
-import { cn } from "@/lib/utils";
-import { LocationData } from "../../../typings";
+import { Button } from "../ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "../ui/form";
 
 const ViewTicketModal = () => {
   const state = useModalStore();
   const onOpen = state.isOpen && state.type === "viewTicket";
 
-  const [startLocation, setStartLocation] = React.useState<LocationData | null>(
-    null
-  );
-  const [endLocation, setEndLocation] = React.useState<LocationData | null>(
-    null
-  );
   const [activeTrip, setActiveTrip] = React.useState<"round-trip" | "one-way">(
     "round-trip"
   );
 
-  console.log(startLocation);
+  const form = useForm<z.infer<typeof TicketSchema>>({
+    resolver: zodResolver(TicketSchema),
+    defaultValues: {
+      leavingFrom: null,
+      goingTo: null,
+      date: {
+        departureDate: undefined,
+        returnDate: undefined,
+      },
+      numberOfPassenger: 1,
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof TicketSchema>) => {
+    console.log("submitting", values);
+  };
   return (
     <Dialog open={onOpen} onOpenChange={state.setOpen}>
       <DialogContent className="max-w-6xl mx-auto  grid gap-y-10 p-5 mb-6">
@@ -67,54 +82,28 @@ const ViewTicketModal = () => {
               </Label>
             </span>
           </div>
-          <div className="full w-full">
-            <div className=" grid items-center justify-center mx-auto sm:grid-cols-2 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 h-full gap-3">
-              {/* leave from  */}
-              <PopoverItem
-                title="Leaving from"
-                setLocation={setStartLocation}
-                location={startLocation}
-              />
-              {/* going to  */}
-              <PopoverItem
-                title="Going to"
-                location={endLocation}
-                setLocation={setEndLocation}
-              />
-              {/* date setting */}
-              <div
-                className={cn(
-                  "grid grid-cols-2 h-full border shadow rounded-md",
-                  activeTrip === "one-way" && "grid-cols-1"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="leavingFrom"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <PopoverItem
+                        title="Leaving from"
+                        location={field.value}
+                        setLocation={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              >
-                <PopoverDate title="Departure date" />
-                <PopoverDate
-                  isDisabled={activeTrip === "one-way"}
-                  title="Return date"
-                />
-              </div>{" "}
-              {/* number of passengers */}
-              <div className="grid w-full min-h-[70px]  items-center gap-1.5 border shadow rounded-md p-1">
-                <Label className="pl-2 text-base text-gray-600" htmlFor="email">
-                  Number of passengers
-                </Label>
-                <Input
-                  type="number"
-                  defaultValue={1}
-                  min={1}
-                  className="!border-none !outline-none !shadow-none focus:!ring-0"
-                />
-              </div>
-            </div>
+              />
 
-            <div className="grid grid-cols-4 lg:grid-cols-1 lg:justify-items-end h-[70px] mt-3 gap-3">
-              <Button className="h-[70px] min-w-[267px] col-span-4 lg:col-auto w-full lg:w-auto">
-                <SearchIcon className="!h-5 !w-5 text-3xl" />
-                <span className="text-lg">Search</span>
-              </Button>
-            </div>
-          </div>
+              <Button type="submit">submit</Button>
+            </form>
+          </Form>
         </div>
       </DialogContent>
     </Dialog>

@@ -1,6 +1,6 @@
 export type LocationData = {
-  id: string;
+  id: number;
   name: string;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
 };
