@@ -51,9 +51,9 @@ export const TicketSchema = z.object({
     })
     .nullable(),
 
-  date: z.object({
-    departureDate: z.date(),
-    returnDate: z.date().optional(),
-  }),
-  numberOfPassenger: z.number().min(1),
+  // date: z.object({
+  //   departureDate: z.date(),
+  //   returnDate: z.date().optional(),
+  // }),
+  // numberOfPassenger: z.number().min(1),
 });

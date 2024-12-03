@@ -30,11 +30,11 @@ const ViewTicketModal = () => {
     defaultValues: {
       leavingFrom: null,
       goingTo: null,
-      date: {
-        departureDate: undefined,
-        returnDate: undefined,
-      },
-      numberOfPassenger: 1,
+      // date: {
+      //   departureDate: undefined,
+      //   returnDate: undefined,
+      // },
+      // numberOfPassenger: 1,
     },
   });
 
@@ -92,6 +92,22 @@ const ViewTicketModal = () => {
                     <FormControl>
                       <PopoverItem
                         title="Leaving from"
+                        location={field.value}
+                        setLocation={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="goingTo"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <PopoverItem
+                        title="going to"
                         location={field.value}
                         setLocation={field.onChange}
                       />
