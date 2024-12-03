@@ -43,10 +43,6 @@ export const PopoverItem = ({
   }, [location]);
 
   useEffect(() => {
-    setLocation(null);
-  }, [setOpenLeaveFrom]);
-
-  useEffect(() => {
     if (location && location.name.length >= 2) {
       onFetchData();
     }
