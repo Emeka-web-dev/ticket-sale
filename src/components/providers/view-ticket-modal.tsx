@@ -1,13 +1,17 @@
 import { Label } from "@/components/ui/label";
 import { useModalStore } from "@/lib/use-modal-store";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import { format } from "date-fns";
 
+import { useSessionStore } from "@/hooks/user-session-store";
+import { calculateDistance } from "@/utils/get-distance";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { TicketSchema } from "../../../schemas";
+import { PopoverCalender } from "../popover-calender";
 import { PopoverItem } from "../popover-item";
 import { Button } from "../ui/button";
 import {
@@ -17,11 +21,8 @@ import {
   FormItem,
   FormMessage,
 } from "../ui/form";
-import { PopoverCalender } from "../popover-calender";
 import { Input } from "../ui/input";
-import { calculateDistance } from "@/utils/get-distance";
-import { useSessionStore } from "@/hooks/user-session-store";
-import Link from "next/link";
+import axios from "axios";
 
 type DistanceData = {
   from: string;
@@ -32,12 +33,14 @@ type DistanceData = {
   price: number;
   ticketType: "round-trip" | "one-way";
 };
+
 const ViewTicketModal = () => {
   const state = useModalStore();
   const session = useSessionStore((state) => state.session);
   const onOpen = state.isOpen && state.type === "viewTicket";
 
   const [distance, setDistance] = useState<DistanceData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [activeTrip, setActiveTrip] = useState<"round-trip" | "one-way">(
     "round-trip"
@@ -86,9 +89,24 @@ const ViewTicketModal = () => {
       ticketType: activeTrip,
     });
   };
+
+  const handleBuyTicket = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post(
+        "/api/checkout",
+        JSON.stringify(distance?.price)
+      );
+      window.location.assign(data.data.authorization_url);
+    } catch (error) {
+      console.log("sometihng went wrong", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <Dialog open={onOpen} onOpenChange={state.setOpen}>
-      <DialogContent className="max-w-6xl mx-auto  grid gap-y-10 p-5 mb-6">
+      <DialogContent className="max-w-6xl mx-auto grid gap-y-10 p-5 mb-6">
         <DialogHeader>
           <DialogTitle className="text-center grid gap-y-5">
             <h1 className="text-center text-3xl">
@@ -139,12 +157,17 @@ const ViewTicketModal = () => {
               </div>
               <div className="grid md:justify-end w-full   ">
                 {session ? (
-                  <Button className=" cursor-pointer capitalize font-medium md:w-[252px] h-[70px]">
+                  <Button
+                    onClick={handleBuyTicket}
+                    disabled={isLoading}
+                    className="cursor-pointer capitalize font-medium md:w-[252px] h-[70px]"
+                  >
                     Buy Ticket
                   </Button>
                 ) : (
                   <Button
                     asChild
+                    onClick={() => state.setOpen(false)}
                     className=" cursor-pointer capitalize font-medium md:w-[252px] h-[70px] "
                   >
                     <Link href="/auth/login">Login to buy ticket</Link>
@@ -198,7 +221,7 @@ const ViewTicketModal = () => {
                     control={form.control}
                     name="leavingFrom"
                     render={({ field }) => (
-                      <FormItem className="min-h-[70px">
+                      <FormItem className="min-h-[70px]">
                         <FormControl>
                           <PopoverItem
                             title="Leaving from"
@@ -282,5 +305,4 @@ const ViewTicketModal = () => {
   );
 };
 
-// grid-cols-[repeat(auto-fit,_minmax(270px,_1fr))]
 export default ViewTicketModal;

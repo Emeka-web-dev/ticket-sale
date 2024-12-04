@@ -85,8 +85,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   try {
-    const redirectTo =
-      existingUser.role === "ADMIN" ? "/admin/dashboard" : "/dashboard";
+    const redirectTo = existingUser.role === "ADMIN" ? "/admin/dashboard" : "/";
 
     await signIn("credentials", {
       email,
