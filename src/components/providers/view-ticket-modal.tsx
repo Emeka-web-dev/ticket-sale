@@ -28,7 +28,8 @@ type DistanceData = {
   from: string;
   to: string;
   distance: number;
-  date: string;
+  startDate: Date;
+  returnDate?: Date;
   numberOfPassenger: number;
   price: number;
   ticketType: "round-trip" | "one-way";
@@ -83,7 +84,8 @@ const ViewTicketModal = () => {
       from: leavingFrom?.name as string,
       to: goingTo?.name as string,
       distance,
-      date: String(format(date.from, "LLL dd, y")),
+      startDate: date.from,
+      returnDate: date.to,
       numberOfPassenger,
       price,
       ticketType: activeTrip,
@@ -97,6 +99,7 @@ const ViewTicketModal = () => {
         "/api/checkout",
         JSON.stringify(distance?.price)
       );
+      console.log(data.data.authorization_url);
       window.location.assign(data.data.authorization_url);
     } catch (error) {
       console.log("sometihng went wrong", error);
@@ -130,7 +133,9 @@ const ViewTicketModal = () => {
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-medium">Date:</h2>
                 <div className="flex-grow border-dotted border-b border-gray-800 mx-3"></div>
-                <p className="text-muted-foreground">{distance.date}</p>
+                <p className="text-muted-foreground">
+                  {String(format(distance.startDate, "LLL dd, y"))}
+                </p>
               </div>
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-medium">Number of passengers:</h2>

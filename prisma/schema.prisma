@@ -59,76 +59,32 @@ model User {
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorComfirmation?
   role                  UserRole               @default(USER)
+  tickets               Ticket[]
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
 }
 
 model Ticket {
-  id           String       @id @default(uuid())
-  ticketNumber String       @unique
-  passenger    Passenger    @relation(fields: [passengerId], references: [id])
-  passengerId  String
-  route        Route        @relation(fields: [routeId], references: [id])
-  routeId      String
-  seatNumber   String?
-  price        Decimal
-  status       TicketStatus
-  purchasedAt  DateTime     @default(now())
-  validFrom    DateTime
-  validUntil   DateTime?
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-}
+  id           String @id @default(uuid())
+  ticketNumber String @unique
+  userId       String
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-model Passenger {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  phone     String?
-  tickets   Ticket[]
+  distance           Float
+  leavingFrom        String
+  goingTo            String
+  startDate          DateTime
+  endDate            DateTime?
+  isRoundTrip        Boolean
+  price              Float
+  status             TicketStatus
+  numberOfPassengers Int
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Route {
-  id            String    @id @default(uuid())
-  origin        Location  @relation("originLocation", fields: [originId], references: [id])
-  originId      String
-  destination   Location  @relation("destinationLocation", fields: [destinationId], references: [id])
-  destinationId String
-  distance      Float // Distance in kilometers
-  duration      Int // Duration in minutes
-  polyline      String? // Encoded Google Maps polyline
-  type          RouteType
-  tickets       Ticket[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
-
-model Location {
-  id           String   @id @default(uuid())
-  name         String
-  address      String
-  latitude     Float
-  longitude    Float
-  placeId      String? // Google Maps Place ID
-  originRoutes Route[]  @relation("originLocation")
-  destRoutes   Route[]  @relation("destinationLocation")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  @@index([latitude, longitude])
-  @@index([placeId])
-}
-
 enum TicketStatus {
-  BOOKED
   PAID
   CANCELLED
-  COMPLETED
-}
-
-enum RouteType {
-  BUS
-  TRAIN
-  PLANE
-  FERRY
 }

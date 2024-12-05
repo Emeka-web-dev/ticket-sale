@@ -17,6 +17,7 @@ export async function POST(req: Request) {
       metadata: {
         userId: user.id,
         cancel_action: `${process.env.NEXT_PUBLIC_SITE_URL!}`,
+        amount: body,
       },
     };
 
