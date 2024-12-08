@@ -1,46 +1,10 @@
 "use client";
-import { columns, TicketProp } from "@/components/customer-dashboard/column";
-import { DataTable } from "@/components/customer-dashboard/data-table";
 
 const DashboardPage = () => {
-  const dashboardPageData: TicketProp[] = [
-    {
-      TicketID: "T12345",
-      price: 100,
-      status: "open",
-      date: "2022-01-01",
-      customer: "John Doe",
-      active: true,
-    },
-    {
-      TicketID: "T12345",
-      price: 100,
-      status: "open",
-      date: "2022-01-01",
-      customer: "John Doe",
-      active: true,
-    },
-    {
-      TicketID: "T12345",
-      price: 100,
-      status: "open",
-      date: "2022-01-01",
-      customer: "John Doe",
-      active: true,
-    },
-    {
-      TicketID: "T12345",
-      price: 100,
-      status: "open",
-      date: "2022-01-01",
-      customer: "John Doe",
-      active: true,
-    },
-  ];
-
   return (
     <div className=" w-full min-h-[calc(100vh-100px)] p-4">
-      <DataTable columns={columns} data={dashboardPageData} />
+      <h2>dashboard</h2>
+      {/* <DataTable columns={columns} data={dashboardPageData} /> */}
     </div>
   );
 };
