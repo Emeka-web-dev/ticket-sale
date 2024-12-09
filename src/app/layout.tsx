@@ -6,6 +6,7 @@ import { ModalProvider } from "@/components/providers/modal-provider";
 import { cn } from "@/lib/utils";
 import { auth } from "@/auth";
 import { SessionProvider } from "@/components/providers/session-provider";
+import { QueryProvider } from "@/components/providers/query-provider";
 
 const rubik = Rubik({
   weight: ["300", "400", "700"],
@@ -30,9 +31,11 @@ export default async function RootLayout({
         className={cn(rubik.className, "flex flex-col min-h-screen relative")}
       >
         <SessionProvider session={session}>
-          <Header />
-          <div className="pt-[4rem] max-w-7xl mx-auto w-full">{children}</div>
-          <ModalProvider />
+          <QueryProvider>
+            <Header />
+            <div className="pt-[4rem] max-w-7xl mx-auto w-full">{children}</div>
+            <ModalProvider />
+          </QueryProvider>
         </SessionProvider>
       </body>
     </html>

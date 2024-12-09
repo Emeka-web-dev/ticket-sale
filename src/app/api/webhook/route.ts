@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { getUserById } from "@/data/user";
 import { db } from "@/lib/db";
+import { pusherServer } from "@/lib/pusher";
 
 export async function POST(req: Request) {
   try {
@@ -28,7 +29,7 @@ export async function POST(req: Request) {
 
         const amount = body?.data?.amount / 100;
 
-        await db.ticket.create({
+        const ticket = await db.ticket.create({
           data: {
             userId: data.userId,
             price: amount,
@@ -42,6 +43,10 @@ export async function POST(req: Request) {
             ticketNumber: body.data.reference,
             numberOfPassengers: Number(data.numberOfPassenger),
           },
+        });
+
+        pusherServer.trigger("ticket-sales", "update-ticket", {
+          ticket,
         });
 
         break;
