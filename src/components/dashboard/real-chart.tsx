@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Ticket } from "@prisma/client";
 
 interface TripData {
   id: number;
@@ -20,7 +21,10 @@ interface TripData {
   price: number;
   numberOfPassengers: number;
 }
-const RealChartUI = () => {
+type RealChartProps = {
+  data: Ticket[];
+};
+const RealChartUI = ({}: RealChartProps) => {
   const rows: TripData[] = [
     {
       id: 1,

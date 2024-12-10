@@ -46,7 +46,10 @@ export async function POST(req: Request) {
         });
 
         pusherServer.trigger("ticket-sales", "update-ticket", {
-          ticket,
+          ...ticket,
+          user: {
+            email: user.email,
+          },
         });
 
         break;

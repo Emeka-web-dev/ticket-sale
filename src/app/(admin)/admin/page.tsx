@@ -1,5 +1,7 @@
 "use client";
+import { useUserQuery } from "@/hooks/use-user-query";
 import RealChartUI from "../../../components/dashboard/real-chart";
+import { useUserSocket } from "@/hooks/use-user-socket";
 // const data = [
 //   {
 //     name: "Page A",
@@ -45,6 +47,24 @@ import RealChartUI from "../../../components/dashboard/real-chart";
 //   },
 // ];
 const AdminPage = () => {
+  const queryKey = "ticket-sales";
+  const { data, status } = useUserQuery({
+    apiUrl: "api/admin/get-all-tickets",
+    queryKey,
+  });
+
+  useUserSocket({ queryKey, eventId: "update-ticket" });
+
+  console.log({ data });
+
+  if (status === "pending") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "error") {
+    return <div>Error</div>;
+  }
+
   return (
     <div className="">
       <h1 className="text-3xl font-bold my-4 ">Manage your sales</h1>
@@ -67,7 +87,7 @@ const AdminPage = () => {
             </BarChart>
           </ResponsiveContainer> */}
         <div className="">
-          <RealChartUI />
+          <RealChartUI data={data} />
         </div>
       </div>
     </div>
