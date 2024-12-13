@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { auth } from "@/auth";
 import { SessionProvider } from "@/components/providers/session-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { Toaster } from "react-hot-toast";
 
 const rubik = Rubik({
   weight: ["300", "400", "700"],
@@ -34,6 +35,7 @@ export default async function RootLayout({
           <QueryProvider>
             <Header />
             <div className="pt-[4rem] max-w-7xl mx-auto w-full">{children}</div>
+            <Toaster />
             <ModalProvider />
           </QueryProvider>
         </SessionProvider>

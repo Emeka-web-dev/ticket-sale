@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
-import { Play } from "lucide-react";
+import { Play, X } from "lucide-react";
 import Image from "next/image";
 import { useModalStore } from "@/lib/use-modal-store";
+// import v1 from "../../public/videos/vd1.mp4";
 
 const Hero = () => {
   const setOpen = useModalStore((state) => state.setOpen);
+  const [openDemo, setOpenDemo] = useState(false);
   return (
     <div className="px-10 flex flex-col-reverse md:grid md:grid-cols-2 gap-y-6 ">
       <div className=" grid place-items-center mx-auto ">
@@ -32,7 +34,10 @@ const Hero = () => {
             >
               Buy ticket
             </Button>
-            <Button className="bg-transparent hover:bg-transparent shadow-none ">
+            <Button
+              onClick={() => setOpenDemo(true)}
+              className="bg-transparent hover:bg-transparent shadow-none "
+            >
               <div className="flex gap-2 items-center">
                 <div className="!bg-orange-600  shadow-lg shadow-orange-600 w-7 h-7 p-2 rounded-full flex items-center justify-center">
                   <Play className="text-white" />
@@ -43,6 +48,23 @@ const Hero = () => {
               </div>
             </Button>
           </div>
+          {openDemo && (
+            <div className="fixed top-0 left-0 z-50 w-full h-full flex items-center justify-center flex-col gap-2 bg-black bg-opacity-50">
+              <X
+                onClick={() => setOpenDemo(false)}
+                className="text-white w-10 font-bold h-10 cursor-pointer justify-end flex items-end"
+              />
+
+              <iframe
+                src={"https://www.youtube.com/watch?v=V-bx4IhLtuE"}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full max-w-4xl  h-[70vh] "
+              ></iframe>
+            </div>
+          )}
         </div>
       </div>
 

@@ -11,76 +11,39 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Ticket } from "@prisma/client";
+import { format } from "date-fns";
+import toast from "react-hot-toast";
+import { useModalStore } from "@/lib/use-modal-store";
+import Link from "next/link";
 
 interface TripData {
-  id: number;
+  id: string;
+  ticketNumber: string;
+  userId: string;
+  distance: number;
   leavingFrom: string;
   goingTo: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date | null;
+  endDate: Date | null;
+  isRoundTrip: boolean;
   price: number;
+  status: string;
   numberOfPassengers: number;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 }
 type RealChartProps = {
   data: Ticket[];
 };
-const RealChartUI = ({}: RealChartProps) => {
-  const rows: TripData[] = [
-    {
-      id: 1,
-      leavingFrom: "Lagos",
-      goingTo: "Abuja",
-      startDate: "2022-01-01T10:00:00Z",
-      endDate: "2022-01-02T10:00:00Z",
-      price: 25,
-      numberOfPassengers: 2,
-    },
-    {
-      id: 2,
-      leavingFrom: "Lagos",
-      goingTo: "Abuja",
-      startDate: "2022-01-01T10:00:00Z",
-      endDate: "2022-01-02T10:00:00Z",
-      price: 25,
-      numberOfPassengers: 2,
-    },
-    {
-      id: 3,
-      leavingFrom: "Lagos",
-      goingTo: "Abuja",
-      startDate: "2022-01-01T10:00:00Z",
-      endDate: "2022-01-02T10:00:00Z",
-      price: 25,
-      numberOfPassengers: 2,
-    },
-    {
-      id: 6,
-      leavingFrom: "Lagos",
-      goingTo: "Abuja",
-      startDate: "2022-01-01T10:00:00Z",
-      endDate: "2022-01-02T10:00:00Z",
-      price: 25,
-      numberOfPassengers: 2,
-    },
-    {
-      id: 4,
-      leavingFrom: "Lagos",
-      goingTo: "Abuja",
-      startDate: "2022-01-01T10:00:00Z",
-      endDate: "2022-01-02T10:00:00Z",
-      price: 25,
-      numberOfPassengers: 2,
-    },
-    {
-      id: 5,
-      leavingFrom: "Lagos",
-      goingTo: "Abuja",
-      startDate: "2022-01-01T10:00:00Z",
-      endDate: "2022-01-02T10:00:00Z",
-      price: 25,
-      numberOfPassengers: 2,
-    },
-  ];
+
+const RealChartUI = ({ data }: RealChartProps) => {
+  const rows: TripData[] = data;
+  const handleCopy = async (id: string) => {
+    await navigator.clipboard.writeText(id);
+    toast.success("id copied to clipboard");
+  };
+
+  const setOpen = useModalStore((state) => state.setOpen);
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 150 },
@@ -91,7 +54,9 @@ const RealChartUI = ({}: RealChartProps) => {
       headerName: "startDate",
       width: 150,
       renderCell: (item: GridRenderCellParams<TripData>) => (
-        <span>{item?.row.startDate.slice(0, 10)}</span>
+        <span>
+          {format(new Date(item?.row.startDate as Date), "yyyy-MM-dd")}
+        </span>
       ),
     },
     {
@@ -99,7 +64,9 @@ const RealChartUI = ({}: RealChartProps) => {
       headerName: "endDate",
       width: 150,
       renderCell: (item: GridRenderCellParams<TripData>) => (
-        <span>{item?.row.endDate.slice(0, 10)}</span>
+        <span>
+          {format(new Date(item?.row.endDate as Date), "yyyy-MM-dd")}{" "}
+        </span>
       ),
     },
 
@@ -122,8 +89,20 @@ const RealChartUI = ({}: RealChartProps) => {
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>{item.id} </DropdownMenuItem>
-                <DropdownMenuItem>downloads</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleCopy(item.id as string)}
+                  className="cursor-pointer"
+                >
+                  copy id{" "}
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link
+                    href={`/dashboard/${item.id}`}
+                    className="cursor-pointer"
+                  >
+                    view ticket
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </span>
@@ -133,7 +112,15 @@ const RealChartUI = ({}: RealChartProps) => {
   ];
 
   return (
-    <div style={{ height: "100%", width: "100%" }} className="">
+    <div style={{ height: "100%", width: "95%" }} className="mx-auto">
+      <div className="my-4 grid w-full place-content-end">
+        <Button
+          onClick={() => setOpen(true, "viewTicket")}
+          className=" capitalize shadow  text-white w-[170px] !py-6 text-base   "
+        >
+          Buy ticket
+        </Button>
+      </div>
       <DataGrid rows={rows} columns={columns} />
     </div>
   );

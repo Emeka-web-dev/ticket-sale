@@ -6,18 +6,27 @@ import { usePathname } from "next/navigation";
 import { UserButton } from "./auth/user-button";
 import Logo from "./logo";
 import { Button } from "./ui/button";
+import { useSessionStore } from "@/hooks/user-session-store";
 
 export const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Schedule", href: "/shedule" },
-  //   { name: "Team", href: "/team" },
   { name: "FAQ", href: "/faq" },
 ];
 export const Header = () => {
   const pathname = usePathname();
   const setOpen = useModalStore((state) => state.setOpen);
+  const { session } = useSessionStore();
 
   const isAuthroute = pathname.startsWith("/auth");
+
+  const dashboardPath =
+    session?.user?.role === "ADMIN" ? "/admin" : "/dashboard";
+
+  const dynamicNavLinks = [
+    ...navLinks,
+    { name: "Dashboard", href: dashboardPath },
+  ];
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-[4rem] border-b border-gray-200 bg-white">
       <div className="flex items-center justify-between max-w-7xl mx-auto px-4 py-2">
@@ -29,7 +38,7 @@ export const Header = () => {
         {/* Menu */}
         {!isAuthroute && (
           <nav className="hidden md:flex space-x-4 text-lg font-semibold">
-            {navLinks.map((link) => (
+            {dynamicNavLinks.map((link) => (
               <Link key={link.name} href={link.href}>
                 {link.name}
               </Link>

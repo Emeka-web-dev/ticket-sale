@@ -98,7 +98,7 @@ const ViewTicketModal = () => {
       const { data } = await axios.post("/api/checkout", {
         ...distance,
       });
-      console.log(data);
+
       window.location.assign(data.data.authorization_url);
     } catch (error) {
       console.log("sometihng went wrong", error);
@@ -133,9 +133,9 @@ const ViewTicketModal = () => {
                 <h2 className="text-lg font-medium">Date:</h2>
                 <div className="flex-grow border-dotted border-b border-gray-800 mx-3"></div>
                 <p className="text-muted-foreground">
-                  {String(format(distance.startDate, "LLL dd, y"))}-
+                  {String(format(distance.startDate, "LLL dd, y"))}
                   {distance.returnDate &&
-                    String(format(distance.returnDate, "LLL dd, y"))}
+                    -String(format(distance.returnDate, "LLL dd, y"))}
                 </p>
               </div>
               <div className="flex justify-between items-center">

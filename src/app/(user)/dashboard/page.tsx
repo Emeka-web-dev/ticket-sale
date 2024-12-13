@@ -7,7 +7,6 @@ const DashboardPage = () => {
     apiUrl: "/api/user-tickets",
     queryKey: "user",
   });
-  console.log({ data, status });
 
   if (status === "pending") {
     return <div>Loading...</div>;
@@ -16,7 +15,7 @@ const DashboardPage = () => {
   if (status === "error") {
     return <div>Error...</div>;
   }
-  console.log({ data });
+
   return <RealChartUI data={data} />;
 };
 
