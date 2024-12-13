@@ -22,12 +22,11 @@ export const useUserSocket = ({
     pusherClient.subscribe(queryKey);
 
     pusherClient.bind(eventId, (newTicket: TicketWithEmail) => {
-      queryClient.setQueryData(
-        [queryKey],
-        (oldData: TicketWithEmail[] | undefined) => {
-          return [...(oldData || [])].unshift(newTicket);
-        }
-      );
+      queryClient.setQueryData([queryKey], (oldData: TicketWithEmail[]) => {
+        console.log("newTicket", newTicket);
+        console.log("oldData", oldData);
+        return [...oldData, newTicket];
+      });
     });
 
     return () => {

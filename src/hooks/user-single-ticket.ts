@@ -1,4 +1,4 @@
-import { Ticket, User } from "@prisma/client";
+import { Ticket } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 
 interface UserQuery {

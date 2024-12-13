@@ -21,7 +21,11 @@ export const SidebarToggle = () => {
       <SheetContent>
         <nav className="flex flex-col space-y-3 pt-4">
           {dynamicNavLinks.map((link) => (
-            <Link key={link.href} href={link.href}>
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => state.setOpen(false)}
+            >
               {link.name}
             </Link>
           ))}

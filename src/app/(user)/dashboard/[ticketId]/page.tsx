@@ -1,13 +1,11 @@
 "use client";
-import { useSingleTicketQuery } from "@/hooks/user-single-ticket";
-import { useParams } from "next/navigation";
-import React, { useRef } from "react";
-import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { useSingleTicketQuery } from "@/hooks/user-single-ticket";
+import { format } from "date-fns";
 import html2pdf from "html2pdf.js";
+import { useParams } from "next/navigation";
 
 const SingleTicket = () => {
-  const refElement = useRef(null);
   const { ticketId } = useParams();
   const { data, status } = useSingleTicketQuery({
     apiUrl: `/api/user-tickets/${ticketId}`,

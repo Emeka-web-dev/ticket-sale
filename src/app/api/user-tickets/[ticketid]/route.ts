@@ -2,10 +2,10 @@ import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export const GET = async (
-  req: Response,
+export async function GET(
+  req: Request,
   { params }: { params: { ticketid: string } }
-) => {
+) {
   try {
     const { ticketid } = params;
     const user = await currentUser();
@@ -26,11 +26,9 @@ export const GET = async (
         },
       },
     });
-    return new NextResponse(JSON.stringify(singleTicket), { status: 200 });
+    return NextResponse.json(singleTicket);
   } catch (error) {
-    return new NextResponse(
-      JSON.stringify({ message: "can not fetch ticket" }),
-      { status: 500 }
-    );
+    console.log("INTERNAL_ERROR", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
-};
+}
